@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "gamba_slot",
+  "version": "${version}",
+  "name": "Gamba Slot",
+  "description": "Eine blaue Erz-Slotmaschine mit Einsatzprüfung, Animation und virtuellen Münzen.",
+  "authors": ["GambaSlot"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "de.gambaslot.GambaSlotMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
