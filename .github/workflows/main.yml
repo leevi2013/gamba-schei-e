@@ -1,0 +1,117 @@
+GAMBA SLOT – ALLE PROJEKTDATEIEN
+Jede Datei muss unter dem angegebenen Pfad erstellt werden.
+
+================================================================================
+FILE: .github/workflows/build.yml
+================================================================================
+
+name: Build Fabric mod
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.8.1'
+      - name: Build mod
+        run: gradle build
+      - name: Upload mod JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamba-slot-jar
+          path: build/libs/*.jar
+
+================================================================================
+FILE: .gitignore
+================================================================================
+
+.gradle/
+build/
+out/
+.idea/
+*.iml
+run/
+
+================================================================================
+FILE: LICENSE
+================================================================================
+
+MIT License
+
+Copyright (c) 2026 GambaSlot
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+================================================================================
+FILE: README.md
+================================================================================
+
+# Gamba Slot — Minecraft Fabric 1.21.11
+
+Eine serverseitige Minecraft-Java-Mod mit einer blauen, normalen Kisten-GUI als Erz-Slotmaschine.
+Die Walzen laufen zufällig 2 bis 4 Sekunden. Es zählt nur, wenn am Ende alle drei Symbole in der mittleren Reihe gleich sind.
+
+## Funktionen
+
+- Blaue Glasfenster als GUI-Hintergrund und klare, getrennte Slot-Positionen.
+- `/gamba` öffnet die Maschine mit einem Einsatz von 10 Coins.
+- `/gamba <einsatz>` öffnet sie mit deinem Einsatz, zum Beispiel `/gamba 25`.
+- `/gamba kontostand` zeigt deine virtuellen Coins.
+- `/gamba hilfe` zeigt die Befehle.
+- Einsätze <= 0 sowie Einsätze über dem Maximum werden abgelehnt.
+- Beim Drehen wird geprüft, ob genug Coins vorhanden sind.
+- Startguthaben: 1.000 virtuelle Coins pro Spieler.
+- Kontostände werden in `gamba-balances.properties` im Weltordner gespeichert.
+- Der Einsatz wird vor der Animation abgezogen.
+- Bei drei gleichen Symbolen wird Einsatz × Multiplikator ausgezahlt.
+- Kohleerz mit 0,5x zahlt die Hälfte des Einsatzes zurück.
+
+## Multiplikatoren
+
+| Symbol | Multiplikator |
+|---|---:|
+| Coal Ore | 0,5x |
+| Iron Ore | 1,2x |
+| Gold Ore | 2,0x |
+| Diamond Ore | 5,0x |
+| Emerald Ore | 10,0x |
+| Ancient Debris / Netherite | 25,0x — Jackpot |
+
+Die Auszahlung ist der Gesamtbetrag, der zurückkommt, nicht der Nettogewinn.
+Beispiel: Bei einem Einsatz von 100 Coins und drei Diamanterzen werden 500 Coins ausgezahlt. Nach Abzug des Einsatzes beträgt der Nettogewinn 400 Coins.
+
+## Voraussetzungen
+
+- Minecraft Java Edition 1.21.11
+- Java JDK 21
+- Fabric Loader und Fabric API passend für 1.21.11
+
+Die Mod läuft serverseitig. Für einen Multiplayer-Server gehört die gebaute Mod-JAR in den Ordner `mods` des Fabric-Servers.
+
+## Bauen
